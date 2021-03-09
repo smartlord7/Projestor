@@ -1,0 +1,101 @@
+﻿<div class="container">
+    <form name="userForm">
+        <h3 ng-if="action=='register'" class="display-4" style="margin-top:100px">Projestor - Register</h3>
+        <h3 ng-if="action=='editAccount'" class="display-4" style="margin-top:100px">Edit Account</h3>
+        <div class="row mt-5">
+            <div class="col-4">
+                <fieldset>
+                    <div class="form-group mt-4">
+                        <label for="firstName">* First Name:</label>
+                        <input class="form-control" ng-model="user.firstName" style="width: 75%" name="firstName" type="text" placeholder="Enter your first name... " maxlength="50" required />
+                    </div>
+                    <div class="form-group mt-4">
+                        <label for="lastName">* Last Name:</label>
+                        <input class="form-control" ng-model="user.lastName" style="width: 75%" name="lastName" type="text" placeholder="Enter your last name..." maxlength="50" required />
+                    </div>
+                    <div class="form-group mt-4">
+                        <label for="userName">* Username:</label>
+                        <input class="form-control" ng-model="user.userName" style="width: 75%" name="userName" type="text" placeholder="Enter your username..." maxlength="50" required />
+                    </div>
+                    <div class="form-group mt-4">
+                        <label for="phoneNumber">* Phone Number:</label>
+                        <input class="form-control" ng-model="user.phoneNumber" style="width: 75%" name="phoneNumber" type="tel" placeholder="Enter your phone number..." required />
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-4">
+                <fieldset>
+                    <div class="form-group mt-4">
+                        <label for="job">* Job:</label>
+                        <input class="form-control" ng-model="user.job" style="width: 75%" name="job" type="text" placeholder="Enter your job..." maxlength="15" required />
+                    </div>
+                    <div ng-if="action == 'register' || action == 'editAccount' && role == 'Admin'" class="form-group mt-4">
+                        <label for="birthDate">* Birthdate:</label>
+                        <input class="form-control" ng-model="user.birthDate" style="width: 75%" name="birthDate" type="date" required />
+                    </div>
+                    <div ng-if="action == 'register' || action == 'editAccount' && role == 'Admin'" class="form-group mt-4">
+                        <label for="gender">* Gender: </label>
+                        <select class="form-control" ng-model="user.gender" style="width: 75%" name="gender" required>
+                            <option ng-selected="user.gender==0" value="0" selected>Male</option>
+                            <option ng-selected="user.gender==1" value="1">Female</option>
+                            <option ng-selected="user.gender==2" value="2">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-check-group mt-4">
+                        <label for="bio">Bio:</label>
+                        <textarea class="form-control" ng-model="user.bio" style="width: 70%; max-height: 133px; min-height: 50px; position: absolute" name="bio" placeholder="Write something about you..." />
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-4">
+                <fieldset>
+                    <div class="form-group mt-4">
+                        <label for="userName">* Email:</label>
+                        <input class="form-control" ng-model="user.email" style="width: 75%" name="email" type="email" placeholder="Enter your email..." required />
+                    </div>
+                    <div ng-if="role == 'Admin'" class="form-check mt-4">
+                        <input ng-true-value="true" ng-false-value="false" class="form-check-input" type="checkbox" ng-model="user.emailConfirmed" />
+                        <label class="form-check-label" for="confirmEmail"> Confirmed email:</label>
+                    </div>
+                    <div ng-if="role == 'Admin'" class="form-group mt-4" style="width: 75%">
+                        <label for="accessFailedCount">Access failed count: </label>
+                        <input class="form-control" ng-model="user.accessFailedCount" type="number" name="accessFailedCount" />
+                    </div>
+                    <div ng-if="action=='register'" class="form-group mt-4">
+                        <label for="password">* Password:</label>
+                        <input class="form-control" ng-model="user.password" style="width: 75%" name="password" type="password" placeholder="Enter your password..." required />
+                    </div>
+                    <div ng-if="action=='register'" class="form-group mt-4">
+                        <label for="confirmPassword">* Confirm Password:</label>
+                        <input class="form-control" ng-model="user.confirmPassword" style="width: 75%" name="birthDate" type="password" placeholder="Confirm your password..." required />
+                    </div>
+                    <div ng-if="role == 'Admin'" class="form-group mt-4">
+                        <label for="role">* Role: </label>
+                        <select class="form-control" ng-model="user.role" style="width: 75%" name="role" required>
+                            <option ng-selected="user.role=='Admin'" value="Admin">Admin</option>
+                            <option ng-selected="user.role=='Manager'" value="Manager" selected>Manager</option>
+                            <option ng-selected="user.role=='Programmer'" value="Programmer">Programmer</option>
+                        </select>
+                    </div>
+                    <div ng-if="!passwordCheck() && action=='register'" class="alert alert-danger small" style="width: 75%" role="alert">
+                        Passwords do not match!
+                    </div>
+                    <div ng-if="passwordCheck() && action=='register' && user.password && user.confirmPassword" class="alert alert-success small" style="width: 75%" role="alert">
+                        Passwords do match!
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div ng-if="errors.length > 0" class="alert alert-danger fade show mt-4 alert-dismissible" style="width: 30%; position: absolute" role="alert">
+            <p class="lead small" ng-repeat="error in errors">{{error}}</p>
+            <button type="button" class="close" ng-click="errors = []" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="button-group mt-5" role="group" aria-label="Register Controls">
+            <button class="btn btn-outline-success" ng-click="saveUser()" type="submit" role="button"> <span ng-if="action == 'register'">Register  </span><span ng-if="action == 'editAccount'">Save  </span><i class="fa fa-save fa-sm"></i> </button>
+            <button class="btn btn-outline-danger" ng-click="back()" type="button" role="button"> Cancel <i class="fa fa-times fa-sm"></i> </button>
+            <small class="ml-5"> * - Mandatory fields</small>
+        </div>
+    </form>
+</div>

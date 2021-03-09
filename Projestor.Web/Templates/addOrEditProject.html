@@ -1,0 +1,29 @@
+﻿<div class="container-fluid ml-5" style="margin-top: 100px">
+    <div class="row">
+        <div class="col-sm-4">
+            <h4 ng-show="action != 'createProject'" class="display-4 bold">Project <strong>{{project.name}}</strong> - Edit</h4>
+            <h4 ng-show="action == 'createProject'" class="display-4 bold">Create Project</h4>
+            <form name="projectForm" class="ml-3 mt-5">
+                <div class="form-group" style="width: 95%">
+                    <label for="projectName">Project name:</label>
+                    <input class="form-control" ng-model="project.name" type="text" name="projectName" placeholder="Enter the project name..." maxlength="50" required />
+                </div>
+                <div class="form-group" style="width: 95%">
+                    <label for="budget">Budget (&euro;): </label>
+                    <input class="form-control" ng-model="project.budget" type="number" step="0.01" min="0" name="budget" placeholder="Enter the project budget..." required />
+                </div>
+                <div class="form-group" style="width: 87.5%; position: absolute">
+                    <label for="description">Description: </label>
+                    <textarea class="form-control" ng-model="project.description" style="max-height: 175px; min-height: 50px; position: absolute" name="description" placeholder="Enter the project description..." maxlength="1000" />
+                </div>
+                <div class="button-group ml-1" style="margin-top: 250px">
+                    <button type="submit" role="button" class="btn btn-outline-success" ng-disabled="projectForm.$invalid" ng-click="saveProject()">Save project <i class="fa fa-save fa-sm"></i></button>
+                    <button type="reset" role="button" class="btn btn-outline-danger" ng-click="back()">Cancel <i class="fa fa-times fa-sm"></i></button>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-8">
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+﻿<div class="container-fluid">
+    <div class="jumbotron-fluid ml-5">
+        <h3 class="display-4 bold" style="margin-top: 100px">Project <strong>{{project.name}}</strong> - Details</h3>
+        <h5 class="mt-4">Budget: </h5>
+        <p>{{project.budget}}</p>
+        <h5 class="mt-4">Created on: </h5>
+        <p>{{project.createdDateTime | date: "dd/MM/yyyy, HH:mm"}}</p>
+        <h5 class="mt-4">Last modified on: </h5>
+        <p>{{project.lastAlteredDateTime | date: "dd/MM/yyyy, HH:mm"}}</p>
+        <h5 class="mt-4">Description: </h5> <p class="lead">{{project.description}}</p>
+        <button class="btn btn-outline-primary mt-5" ng-click="back()" type="button" role="button"> Back <</button>
+    </div>
+</div>

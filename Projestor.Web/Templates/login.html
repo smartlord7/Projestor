@@ -1,0 +1,33 @@
+﻿<div class="container">
+        <div class="row" style="margin-top:150px">
+            <div class="col-7">
+                <form name="loginForm">
+                    <h3 class="display-4">Projestor - Login</h3>
+                    <div class="form-group mt-4">
+                        <label for="username">Username: </label>
+                        <input class="form-control" ng-model="loginData.username" type="text" id="username"
+                               placeholder="Enter your username...">
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <label for="password">Password: </label>
+                        <input class="form-control" ng-model="loginData.password" type="password" id="password"
+                               placeholder="Enter your password...">
+                    </div>
+                    <div class="form-group mt-5">
+                        <button class="btn btn-outline-primary" ng-disabled="loginForm.$invalid" ng-click="login()" role="button">Login</button>
+                    </div>
+                    <p class="h6">Not registered? </p> <a ng-click="toRegister()" href="#">Sign up</a>
+                    <div ng-show="error" class="alert alert-danger fade show mt-3" role="alert">
+                        <strong>Error: </strong> {{error}}
+                        <button type="button" class="close" ng-click="error = ''" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-5">
+                <img style="margin-left: 100px" class="img-fluid" src="Resources/Images/login.png">
+            </div>
+        </div>
+</div>

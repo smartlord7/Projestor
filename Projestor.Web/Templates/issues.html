@@ -1,0 +1,170 @@
+﻿<div class="container-fluid" style="margin-top: 67px">
+    <div class="row pb-3">
+        <div class="col-sm-9" style="margin-left: -15px">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr ng-class="{'table-primary':role == 'Admin', 'table-success': role == 'Manager', 'table-info': role == 'Programmer'}">
+                            <th scope="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" ng-click="toggleAll($event)" style="cursor: pointer" type="checkbox" name="checkAll" />
+                                    <label for="checkAll">*</label>
+                                </div>
+                            </th>
+                            <th scope="col" ng-class="{'sort-order-selected': sortOrder == sortOrders[0][0]}" ng-click="toggleSortOrder(0)">Name <i ng-class="{'fa fa-angle-up': !sortOrders[0][1], 'fa fa-angle-down': sortOrders[0][1]}"></i></th>
+                            <th scope="col" ng-class="{'sort-order-selected': sortOrder == sortOrders[1][0]}" ng-click="toggleSortOrder(1)">Project <i ng-class="{'fa fa-angle-up': !sortOrders[1][1], 'fa fa-angle-down': sortOrders[1][1]}"></i></th>
+                            <th ng-if="role == 'Admin' || role == 'Manager'" scope="col" ng-class="{'sort-order-selected': sortOrder == sortOrders[2][0]}" ng-click="toggleSortOrder(2)">Programmer <i ng-class="{'fa fa-angle-up': !sortOrders[2][1], 'fa fa-angle-down': sortOrders[2][1]}"></i></th>
+                            <th scope="col" ng-class="{'sort-order-selected': sortOrder == sortOrders[3][0]}" ng-click="toggleSortOrder(3)">Assignment Datetime <i ng-class="{'fa fa-angle-up': !sortOrders[3][1], 'fa fa-angle-down': sortOrders[3][1]}"></i></th>
+                            <th scope="col" ng-class="{'sort-order-selected': sortOrder == sortOrders[4][0]}" ng-click="toggleSortOrder(4)">Limit Date <i ng-class="{'fa fa-angle-up': !sortOrders[4][1], 'fa fa-angle-down': sortOrders[4][1]}"></i></th>
+                            <th scope="col" ng-class="{'sort-order-selected': sortOrder == sortOrders[5][0]}" ng-click="toggleSortOrder(5)">Current State <i ng-class="{'fa fa-angle-up': !sortOrders[5][1], ' fa fa-angle-down': sortOrders[5][1]}"></i></th>
+                            <th scope="col" ng-class="{'sort-order-selected': sortOrder == sortOrders[6][0]}" ng-click="toggleSortOrder(6)">Priority <i ng-class="{'fa fa-angle-up': !sortOrders[6][1], 'fa fa-angle-down': sortOrders[6][1]}"></i></th>
+                            <th scope="col">Actions </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="issue in issues | orderBy:sortOrder:ascendingSortOrder" ng-class="{'table-primary': role == 'Admin' && selectedIssues[$index], 'table-success': role == 'Manager' && selectedIssues[$index], 'table-info': role == 'Programmer' && selectedIssues[$index]}" style="cursor: pointer" ng-show="issue.name.toLowerCase().startsWith(nameStart.toLowerCase()) && issue[filter] == filterValue" ng-click="toggleIssue($index, issue)">
+                            <th scope="row">
+                                {{includeIssue($index, issue)}}
+                                <div class="form-check">
+                                    <input class="form-check-input" ng-checked="selectedIssues[$index] || allSelected" style="cursor: pointer" type="checkbox" name="checkIssue">
+                                    <label for="checkIssue">{{$index + 1}}</label>
+                                </div>
+                            </th>
+                            <td width="175px">{{issue.name}}</td>
+                            <td><a href="#" ng-click="toProjectDetails(issue.projectId)">{{issue.projectName}}</a></td>
+                            <td ng-if="role == 'Admin' || role == 'Manager'"><a href="#" ng-click="toUserDetails(issue.programmerName)">{{issue.programmerName}}</a></td>
+                            <td>{{issue.createdDateTime | date: "dd/MM/yyyy, HH:mm"}}</td>
+                            <td>{{issue.limitDate | date: "dd/MM/yyyy"}}</td>
+                            <td>
+                                <span class="badge"
+                                      ng-class="{'badge-secondary ' : issue.state == 0, 'badge-warning text-white' : issue.state == 1,
+                           'badge-danger ' : issue.state == 2, 'badge-primary' : issue.state == 3, 'badge-success' : issue.state == 4}">
+                                    {{issue | stateFilter}}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge"
+                                      ng-class="{'badge-secondary ' : issue.prio == 0, 'badge-success' : issue.prio == 1,
+                           'badge-warning text-white' : issue.prio == 2, 'badge-danger' : issue.prio == 3}">
+                                    {{issue | prioFilter}}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="#" ng-click="toIssueDetails(issue.id, $index); ; unselectRow($index)">
+                                    Details  <i class="fa fa-info-circle fa-sm"> | </i>
+                                </a> 
+                                <a href="#" data-toggle="modal" data-target="#noteModal" ng-click="toEditNotes(issue.id, issue.name); getIssueNotes(issue.id); unselectRow($index)">
+                                    Notes  <i class="fa fa-sticky-note fa-sm">  </i>
+                                </a> 
+                                <a href="#" ng-if="role == 'Admin' || role == 'Manager'" ng-click="toEditIssue(issue.id); unselectRow($index)"> 
+                                  |  Edit  <i class="fa fa-edit fa-xs"> | </i>
+                                </a> 
+                                <a href="#" ng-if="role == 'Admin' || role == 'Manager'" data-toggle="modal" data-target="#removeIssuesModal"> 
+                                    Delete <i class="fa fa-trash-alt fa-xs"> </i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-3" style="margin-top: 50px">
+            <form>
+                <label for="issueName">Search issue by name: </label>
+                <div class="form-group" style="width: 95%">
+                    <input class="form-control" ng-model="nameStart" type="text" name="issueName" placeholder="Enter the name of the issue..." />
+                </div>
+                <div class="form-group mt-3" style="width: 95%">
+                    <label for="filterBy">Filter by: </label>
+                    <select class="form-control" ng-model="filter" id="filterBy">
+                        <option>None</option>
+                        <option ng-if="action=='issues'" value="projectName">Project name</option>
+                        <option ng-if="action == 'projectIssues'" value="userName">Programmer name</option>
+                        <option value="state">Current State</option>
+                        <option value="prio"> Priority</option>
+                    </select>
+                </div>
+                <div class="form-group mt-3" style="width: 95%">
+                    <i class="fa fa-filter"></i>
+                    <label for="filterValue">Filter value: </label>
+                    <select class="form-control" ng-model="filterValue" id="filterValue">
+                        <option ng-if="filter != 'projectName' && filter != 'userName'" ng-repeat="value in filters[filter]" ng-value="value[0]">{{value[1]}}</option>
+                        <option ng-if="filter == 'projectName' && action=='issues'" ng-repeat="projectName in filters['projectName']" ng-value="projectName">{{projectName}}</option>
+                        <option ng-if="filter == 'userName' && action=='projectIssues'" ng-repeat="userName in filters['userName']" ng-value="userName">{{userName}}</option>
+                    </select>
+                </div>
+                <div ng-if="role == 'Programmer' || role == 'Admin'" class="form-group mt-3" style="width: 95%">
+                    <label for="state">Mark selected issues as: </label>
+                    <select class="form-control" ng-model="$parent.newCurrentState" id="state">
+                        <option value="0">NA</option>
+                        <option value="1">NOT STARTED</option>
+                        <option value="2">FROZEN</option>
+                        <option value="3">IN PROGRESS</option>
+                        <option value="4">FINISHED</option>
+                    </select>
+                </div>
+                <div class="btn-group mt-4" role="group" aria-label="IssueControls" style="width: 95%">
+                    <button ng-if="role == 'Programmer' || role == 'Admin'"  type="button" ng-disabled="noSelectedIssues()" class="btn btn-outline-success" ng-click="markSelectedIssues()">
+                        Mark issue(s) <i class="fa fa-marker fa-sm"></i>
+                    </button>
+                    <button ng-if="role == 'Admin' || role == 'Manager'"  type="button" ng-disabled="noSelectedIssues()" class="btn btn-outline-danger" data-toggle="modal" data-target="#removeIssuesModal">
+                        Delete issue(s) <i class="fa fa-trash fa-sm"></i>
+                    </button>
+                    <button ng-if="role == 'Admin' || role == 'Manager'"  type="button" class="btn btn-outline-primary" ng-click="toCreateIssue()">
+                        Create issue <i class="fa fa-plus fa-sm"></i>
+                    </button>
+                </div>
+            </form>
+            <!--Note Modal-->
+            <div class="modal fade" id="noteModal" tabindex="-1" role="dialog" aria-labelledby="noteModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="noteModalLabel">{{selIssueToEditNotes.name}} - Notes</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <textarea class="form-control" ng-model="issueNotes" style="max-height: 300px; min-height: 100px" placeholder="Write your note...">
+                           </textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" ng-click="saveIssueNotes(selIssueToEditNotes.id, issueNotes)" class="btn btn-secondary" data-dismiss="modal">Save notes</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Remove Issue Modal-->
+            <div ng-if="role == 'Admin' || role == 'Manager'" class="modal fade" id="removeIssuesModal" tabindex="-1" role="dialog" aria-labelledby="removeModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="removeModalLabel">Delete Issue(s)</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete the following issue(s)?
+                            <ul class="list-group mt-4">
+                                <li class="list-group-item" ng-repeat="selectedIssue in selectedIssues">
+                                    {{selectedIssue.name}}
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" ng-click="deleteSelectedIssues()" data-dismiss="modal">Yes</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

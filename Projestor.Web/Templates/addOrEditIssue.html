@@ -1,0 +1,53 @@
+﻿<div class="container ml-5" style="margin-top:100px">
+    <form name="issueForm" class="ml-3">
+        <h4 ng-show="action != 'addIssue'" style="margin-top:100px" class="display-4 bold">Issue <strong>{{issue.name}}</strong> - Edit</h4>
+        <h4 ng-show="action == 'addIssue'" style="margin-top:100px" class="display-4 bold">Create Issue</h4>
+        <div class="row mt-5">
+            <div class="col-sm-4">
+                <fieldset>
+                    <div class="form-group" style="width: 80%">
+                        <label for="issueName">Issue name:</label>
+                        <input class="form-control" ng-model="issue.name" type="text" name="issueName" placeholder="Enter the issue name..." maxlength="50" required />
+                    </div>
+                    <div class="form-group" style="width: 80%">
+                        <label for="limitDate">Limit Date: </label>
+                        <input class="form-control" ng-model="issue.limitDate" type="date" date name="limitDate" required />
+                    </div>
+                    <div class="form-group" style="width: 80%">
+                        <label for="prio">Priority: </label>
+                        <select class="form-control" ng-model="issue.prio" name="prio" required>
+                            <option ng-selected="selectedPrio == 0" ng-value="0">NA</option>
+                            <option ng-selected="selectedPrio == 1" ng-value="1">LOW</option>
+                            <option ng-selected="selectedPrio == 2" ng-value="2">INTERMEDIATE</option>
+                            <option ng-selected="selectedPrio == 3" ng-value="3">HIGH</option>
+                        </select>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-sm-8">
+                <fieldset>
+                    <div class="form-group" style="width: 40%">
+                        <label for="project">Project: </label>
+                        <select class="form-control" ng-model="issue.projectId" name="project" required>
+                            <option ng-repeat="project in projects" ng-value="project.id" ng-selected="selectedProjectId == project.id">{{project.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="width: 40%">
+                        <label for="programmer">Programmer: </label>
+                        <select class="form-control" ng-model="issue.userId" name="programmer" required>
+                            <option ng-repeat="programmer in programmers" ng-value="programmer.id" ng-selected="selectedProgrammerId == programmer.id">{{programmer.userName}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="width: 37.5%; position: absolute">
+                        <label for="description">Description: </label>
+                        <textarea class="form-control" ng-model="issue.description" style="max-height: 150px; min-height: 50px; position: absolute" name="description" placeholder="Enter the project description..." maxlength="1000" />
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="button-group ml-1" style="margin-top: 50px">
+            <button type="submit" role="button" class="btn btn-outline-success" ng-disabled="issueForm.$invalid" ng-click="saveIssue()">Save issue <i class="fa fa-save fa-sm"></i></button>
+            <button type="reset" role="button" class="btn btn-outline-danger" ng-click="back()">Cancel <i class="fa fa-times fa-sm"></i></button>
+        </div>
+    </form>
+</div>

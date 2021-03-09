@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html lang="pt-pt" ng-app="Projestor">
+
+<head>
+    <base href="/">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> Projestor </title>
+    <link rel="stylesheet" href="Lib/Bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="Lib/fontawesome-free-5.14.0-web/css/all.css">
+    <style>
+
+        body {
+            overflow: scroll
+        }
+
+        footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            margin-top: 50px
+        }
+
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none !important;
+        }
+
+        a {
+            cursor: pointer
+        }
+
+        .fa {
+            cursor: pointer !important
+        }
+
+        th {
+            cursor: pointer;
+            user-select: none
+        }
+
+        .sort-order-selected {
+            transform: scale(1.15);
+            opacity: 0.7;
+        }
+
+
+
+        .btn-responsive {
+            white-space: normal !important;
+            word-wrap: break-word;
+        }
+
+        input.ng-touched.ng-invalid.ng-pristine {
+            border: 1px dashed red;
+        }
+
+        .navbar-brand h4 {
+            transition: transform 0.3s;
+        }
+
+        .nav-item {
+            font-size: 18px
+        }
+
+        .nav-link {
+            font-size: 18px
+        }
+
+        .nav-link {
+            transition: color 0.3s;
+        }
+
+        .navbar-brand h4:hover {
+            transform: scale(1.3);
+        }
+
+        .mainOverlay {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            background: rgba(51,51,51,0.4);
+        }
+
+    </style>
+</head>
+
+<body ng-cloak ng-controller="MainController">
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top navbar" ng-class="{'bg-primary': role() == 'Admin', 'bg-success':  role() == 'Manager', 'bg-info': role() == 'Programmer'}" ng-if="isUserLoggedIn()">
+        <a class="navbar-brand p-2" ng-click="toHome()" href="#">
+            <h4 class="h4 d-inline-block">Projestor</h4>
+            <small>| {{role()}}</small>
+        </a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle Navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav text-uppercase ml-auto">
+                <li class="nav-item pr-3" ng-click="toUsers()"><a class="nav-link">Users</a></li>
+                <li class="nav-item pr-3" ng-click="toProjects()"><a class="nav-link">Projects</a></li>
+                <li class="nav-item pr-3" ng-click="toIssues()"><a class="nav-link">Issues</a></li>
+                <li class="navbar-item dropdown" style="margin-right: 100px !important">
+                    <a class="nav-link dropdown-toggle" id="navDropdown" role="button" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false"> Account</a>
+                    <div class="dropdown-menu" aria-labelledby="navDropdown">
+                        <small class="dropdown-item-text" style="font-size: 11px">{{userName()}} | {{role()}} Account</small>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" ng-click="toEditAccount()"><small>Edit</small> <i class="fa fa-edit fa-sm"></i></a>
+                        <a class="dropdown-item" ng-click="toChangePassword()"><small>Change password</small> <i class="fa fa-asterisk fa-sm"></i></a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" ng-click="logout()"><small>Logout</small> <i class="fa fa-sign-out-alt fa-sm"></i></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <ng-view></ng-view>
+    <footer class="font-small" ng-class="{'bg-primary':  role() == 'Admin', 'bg-success':  role() == 'Manager', 'bg-info':  role() == 'Programmer'}" ng-if="isUserLoggedIn()">
+
+        <!-- Copyright -->
+        <div class="text-center py-3 text-white">
+            <strong>Projestor </strong>© 2020 Copyright: Sancho Amaral Simoes
+        </div>
+        <!-- Copyright -->
+
+    </footer>
+    <!--JQuery-->
+    <script src="Lib/jquery-3.0.0.min.js"></script>
+    <!--PopperJS-->
+    <script src="Lib/popper.min.js"></script>
+    <!--Bootstrap-->
+    <script src="Lib/bootstrap.js"></script>
+    <!--FontAwesome-->
+    <!--AngularJS-->
+    <script src="Lib/angular.min.js"></script>
+    <script src="Lib/angular-route.min.js"></script>
+    <!--Angular App-->
+    <script src="JS/app.js"></script>
+    <!--Angular Controllers-->
+    <script src="JS/Controllers/LoginController.js"></script>
+    <script src="JS/Controllers/MainController.js"></script>
+    <script src="JS/Controllers/HomeController.js"></script>
+    <script src="JS/Controllers/IssuesController.js"></script>
+    <script src="JS/Controllers/ProjectsController.js"></script>
+    <script src="JS/Controllers/UsersController.js"></script>
+    <script src="JS/Controllers/AddOrEditIssueController.js"></script>
+    <script src="JS/Controllers/AddOrEditProjectController.js"></script>
+    <script src="JS/Controllers/AddOrEditAccountController.js"></script>
+    <script src="JS/Controllers/IssueDetailsController.js"></script>
+    <script src="JS/Controllers/ProjectDetailsController.js"></script>
+    <script src="JS/Controllers/UserDetailsController.js"></script>
+    <script src="JS/Controllers/ChangePasswordController.js"></script>
+    <!--Angular Services-->
+    <script src="JS/Services/AJAXCaller.js"></script>
+    <script src="JS/Services/SessionService.js"></script>
+    <!--AngularJS Filters-->
+    <script src="JS/Filters/PriorityFilter.js"></script>
+    <script src="JS/Filters/StateFilter.js"></script>
+</body>
+</html>

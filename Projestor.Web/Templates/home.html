@@ -1,0 +1,37 @@
+    <div class="container-fluid row mainOverlay">
+        <div class="col-sm-4">
+            <img style="margin-top: 175px; margin-left: 100px" class="img-fluid" src="Resources/Images/login.png">
+        </div>
+        <div class="col-sm-8">
+            <h3 class="display-3" style="margin-left: 300px; margin-top: 200px">Welcome, {{getUserName()}}!</h3>
+            <p class="lead" style="margin-left: 325px;">
+                Here you can:
+            </p>
+            <ul class="list-group-flush small" style="width: 35%; margin-left: 300px; margin-top: 50px">
+                <li ng-if="role == 'Admin'" class="list-group-item">
+                    Create, view and edit all users
+                </li>
+                <li ng-if="role == 'Admin'" class="list-group-item">
+                    Create, view and edit all projects
+                </li>
+                <li ng-if="role == 'Admin'" class="list-group-item">
+                    Create, view and edit all issues
+                </li>
+                <li ng-if="role == 'Manager'" class="list-group-item">
+                    Create, view and edit projects
+                </li>
+                <li ng-if="role == 'Manager'" class="list-group-item">
+                    Create, view and assign issues to programmers
+                </li>
+                <li ng-if="role == 'Programmer'" class="list-group-item">
+                    View your assigned issues
+                </li>
+                <li ng-if="role == 'Programmer'" class="list-group-item">
+                    Change your issues state
+                </li>
+                <li ng-if="role == 'Programmer'" class="list-group-item">
+                    View the projects in which you are involved
+                </li>
+            </ul>
+        </div>
+    </div>

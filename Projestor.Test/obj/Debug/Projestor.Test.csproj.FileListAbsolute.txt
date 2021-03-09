@@ -1,0 +1,14 @@
+C:\Users\Sancho\source\repos\ProjestorAPI\Projestor.Test\bin\Debug\Projestor.Test.exe.config
+C:\Users\Sancho\source\repos\ProjestorAPI\Projestor.Test\bin\Debug\Projestor.Test.exe
+C:\Users\Sancho\source\repos\ProjestorAPI\Projestor.Test\bin\Debug\Projestor.Test.pdb
+C:\Users\Sancho\source\repos\ProjestorAPI\Projestor.Test\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Sancho\source\repos\ProjestorAPI\Projestor.Test\bin\Debug\SendGrid.dll
+C:\Users\Sancho\source\repos\ProjestorAPI\Projestor.Test\bin\Debug\StarkbankEcdsa.dll
+C:\Users\Sancho\source\repos\ProjestorAPI\Projestor.Test\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Sancho\source\repos\ProjestorAPI\Projestor.Test\bin\Debug\SendGrid.pdb
+C:\Users\Sancho\source\repos\ProjestorAPI\Projestor.Test\bin\Debug\SendGrid.xml
+C:\Users\Sancho\source\repos\ProjestorAPI\Projestor.Test\obj\Debug\Projestor.Test.csprojAssemblyReference.cache
+C:\Users\Sancho\source\repos\ProjestorAPI\Projestor.Test\obj\Debug\Projestor.Test.csproj.CoreCompileInputs.cache
+C:\Users\Sancho\source\repos\ProjestorAPI\Projestor.Test\obj\Debug\Projestor.Test.csproj.CopyComplete
+C:\Users\Sancho\source\repos\ProjestorAPI\Projestor.Test\obj\Debug\Projestor.Test.exe
+C:\Users\Sancho\source\repos\ProjestorAPI\Projestor.Test\obj\Debug\Projestor.Test.pdb

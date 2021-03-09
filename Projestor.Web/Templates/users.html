@@ -1,0 +1,99 @@
+﻿<div class="container-fluid" style="margin-top: 67px">
+    <div class="row pb-3">
+        <div class="col-sm-9" style="margin-left: -15px">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr ng-class="{'table-primary': role == 'Admin', 'table-success': role == 'Manager', 'table-info': role == 'Programmer'}">
+                            <th scope="col">
+                                <div ng-if="userRoles.includes('Admin')" class="form-check">
+                                    <input class="form-check-input" ng-click="toggleAll($event)" style="cursor: pointer" type="checkbox" name="checkAll" />
+                                    <label for="checkAll">*</label>
+                                </div>
+                            </th>
+                            <th scope="col">Role</th>
+                            <th width="150px" ng-if="role == 'Admin'" scope="col" ng-class="{'sort-order-selected': sortOrder == sortOrders[0][0]}" ng-click="toggleSortOrder(0)">Id <i ng-class="{'fa fa-angle-up': !sortOrders[0][1], 'fa fa-angle-down': sortOrders[0][1]}"></i></th>
+                            <th scope="col" ng-class="{'sort-order-selected': sortOrder == sortOrders[1][0]}" ng-click="toggleSortOrder(1)">Username <i ng-class="{'fa fa-angle-up': !sortOrders[1][1], 'fa fa-angle-down': sortOrders[1][1]}"></i></th>
+                            <th scope="col" ng-class="{'sort-order-selected': sortOrder == sortOrders[2][0]}" ng-click="toggleSortOrder(2)">Email <i ng-class="{'fa fa-angle-up': !sortOrders[2][1], 'fa fa-angle-down': sortOrders[2][1]}"></i></th>
+                            <th scope="col" ng-class="{'sort-order-selected': sortOrder == sortOrders[3][0]}" ng-click="toggleSortOrder(3)">Phone number <i ng-class="{'fa fa-angle-up': !sortOrders[3][1], 'fa fa-angle-down': sortOrders[3][1]}"></i></th>
+                            <th scope="col" ng-if="role == 'Admin'" ng-class="{'sort-order-selected': sortOrder == sortOrders[4][0]}" ng-click="toggleSortOrder(4)">Access failed count <i ng-class="{'fa fa-angle-up': !sortOrders[4][1], 'fa fa-angle-down': sortOrders[4][1]}"></i></th>
+                            <th ng-if="role == 'Admin'" scope="col">Email confirmed</th>
+                            <th scope="col">Actions</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="user in users | orderBy:sortOrder:ascendingSortOrder" ng-class="{'table-primary': role == 'Admin' && selectedUsers[$index], 'table-success': role == 'Manager' && selectedUsers[$index], 'table-info': role == 'Programmer' && selectedUsers[$index]}" style="cursor: pointer" ng-show="user.userName.toLowerCase().startsWith(nameStart.toLowerCase())" ng-click="toggleUser($index, user)">
+                            <th scope="row">
+                                {{includeUser($index, user)}}
+                                <div ng-if="role == 'Admin'" class="form-check">
+                                    <input class="form-check-input" ng-checked="selectedUsers[$index]" style="cursor: pointer" type="checkbox" name="checkUser">
+                                    <label for="checkUser">{{$index + 1}}</label>
+                                </div>
+                            </th>
+                            <td>{{user.role}}</td>
+                            <td ng-if="role == 'Admin'">{{user.id}}</td>
+                            <td>{{user.userName}}</td>
+                            <td>{{user.email}}</td>
+                            <td>{{user.phoneNumber}}</td>
+                            <td ng-if="role == 'Admin'">{{user.accessFailedCount}}</td>
+                            <td ng-if="role == 'Admin'">{{user.emailConfirmed}}</td>
+                            <td>
+                                <a href="#" ng-click="toUserDetails(user.userName);unselectRow($index)">
+                                    Details  <i class="fa fa-info-circle fa-sm"> </i>
+                                </a>
+                                <a href="#" ng-if="role == 'Admin'" ng-click="toEditUser(user.userName);unselectRow($index)">
+                                    |  Edit  <i class="fa fa-edit fa-xs"> </i>
+                                </a>
+                                <a href="#" ng-if="role == 'Admin'" data-toggle="modal" data-target="#removeUsersModal">
+                                    |  Delete <i class="fa fa-trash-alt fa-xs"> </i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-3" style="margin-top: 50px">
+            <form>
+                <label for="userName">Search user by name: </label>
+                <div class="form-group" style="width: 95%">
+                    <input class="form-control" ng-model="nameStart" type="text" name="userName" placeholder="Enter the username..." />
+                </div>
+                <div class="btn-group mt-4" role="group" aria-label="UsersControls" style="width: 95%">
+                    <button ng-if="role == 'Admin'" type="button" ng-disabled="noSelectedUsers()" class="btn btn-outline-danger" data-toggle="modal" data-target="#removeUsersModal">
+                        Delete user(s) <i class="fa fa-trash fa-sm"></i>
+                    </button>
+                    <button ng-if="role == 'Admin'" type="button" class="btn btn-outline-primary" ng-click="toRegister()">
+                        Create user <i class="fa fa-plus fa-sm"></i>
+                    </button>
+                </div>
+            </form>
+            <!--Remove Issue Modal-->
+            <div ng-if="role == 'Admin'" class="modal fade" id="removeUsersModal" tabindex="-1" role="dialog" aria-labelledby="removeModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="removeModalLabel">Delete User(s)</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete the following user(s)?
+                            <ul class="list-group mt-4">
+                                <li class="list-group-item" ng-repeat="selectedUser in selectedUsers">
+                                    {{selectedUser.userName}}
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" ng-click="deleteSelectedUsers()" data-dismiss="modal">Yes</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,92 @@
+<div class="container-fluid" style="margin-top: 67px">
+    <div class="row">
+        <div class="col-sm-9" style="margin-left: -15px">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr ng-class="{'table-primary': role == 'Admin', 'table-success':  role == 'Manager', 'table-info':  role == 'Programmer'}">
+                            <th scope="col">
+                                <div ng-if="role == 'Admin' || role == 'Manager'" class="form-check">
+                                    <input class="form-check-input" ng-click="toggleAll($event)" style="cursor: pointer" type="checkbox" name="checkAll" />
+                                    <label for="checkAll">*</label>
+                                </div>
+                                <i ng-if="role == 'Admin'" class="fa fa-hashtag fa-sm ml-3"></i>
+                            </th>
+                            <th scope="col" ng-class="{'sort-order-selected': sortOrder == sortOrders[0][0]}" ng-click="toggleSortOrder(0)">Name  <i ng-class="{'fa fa-angle-up': !sortOrders[0][1], 'fa fa-angle-down': sortOrders[0][1]}"></i></th>
+                            <th scope="col" ng-if="role == 'Admin' || role == 'Programmer'" ng-class="{'sort-order-selected': sortOrder == sortOrders[1][0]}" ng-click="toggleSortOrder(1)">Manager  <i ng-class="{'fa fa-angle-up': !sortOrders[1][1], 'fa fa-angle-down': sortOrders[1][1]}"></i></th>
+                            <th scope="col" ng-class="{'sort-order-selected': sortOrder == sortOrders[2][0]}" ng-click="toggleSortOrder(2)">Budget  <i ng-class="{'fa fa-angle-up': !sortOrders[2][1], 'fa fa-angle-down': sortOrders[2][1]}"></i></th>
+                            <th scope="col" ng-class="{'sort-order-selected': sortOrder == sortOrders[3][0]}" ng-click="toggleSortOrder(3)">Creation datetime  <i ng-class="{'fa fa-angle-up': !sortOrders[3][1], 'fa fa-angle-down': sortOrders[3][1]}"></i></th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="project in projects | orderBy:sortOrder:ascendingSortOrder" ng-class="{'table-primary': role == 'Admin' && selectedProjects[$index], 'table-success': role == 'Manager' && selectedProjects[$index], 'table-info': role == 'Programmer' && selectedProjects[$index]}" ng-if="project.name.toLowerCase().startsWith(nameStart.toLowerCase())" ng-click="toggleProject($index, project)" style="cursor: pointer">
+                            <th scope="row">
+                                {{addProject($index, project)}}
+                                <div class="form-check">
+                                    <input ng-if="role == 'Admin' || role == 'Manager'" class="form-check-input" ng-checked="selectedProjects[$index] || allSelected" style="cursor: pointer" type="checkbox" name="checkProject" />
+                                    <label for="checkProject">{{$index + 1}}</label>
+                                </div>
+                            </th>
+                            <td>{{project.name}}</td>
+                            <td ng-if="role == 'Admin' || role == 'Programmer'"><a ng-click="toUserDetails(project.managerName)" href="#">{{project.managerName}}</a></td>
+                            <td>{{project.budget}}</td>
+                            <td>{{project.createdDateTime | date: "dd/MM/yyyy, HH:mm"}}</td>
+                            <td>
+                                <a href="#" ng-click="toProjectDetails(project.id); unselectRow($index)">Details <i class="fa fa-info-circle fa-sm"></i> | </a>
+                                
+                                <a href="#" ng-if="role == 'Admin' || role == 'Manager'" ng-click="toEditProject(project); unselectRow($index)"> Edit <i class="fa fa-edit fa-xs"></i> | </a>
+                                
+                                <a href="#" ng-click="toProjectIssues(project.id, project.name); unselectRow($index)"> Issues <i class="fa fa-tasks fa-xs"></i> </a>
+                                
+                                <a href="#" ng-if="role == 'Admin' || role == 'Manager'" data-toggle="modal" data-target="#deleteProjectModal">| Delete <i class="fa fa-trash-alt fa-xs"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+            <div class="col-sm-3" style="margin-top: 50px">
+                <form>
+                    <label for="name">Project name:</label>
+                    <div class="form-group" style="width: 95%">
+                        <input class="form-control" ng-model="nameStart" type="text" name="name" placeholder="Enter the project name...">
+                    </div>
+                    <div ng-if="role == 'Admin' || role == 'Manager'" class="btn-group mt-4" style="width: 95%" role="group" aria-label="GlobalProjectActions">
+                        <button type="button" ng-disabled="noSelectedProjects()" class="btn btn-responsive btn-outline-danger" data-toggle="modal" data-target="#deleteProjectModal">
+                            Delete project(s) <i class="fa fa-trash fa-sm"></i>
+                        </button>
+                        <button type="button" class="btn btn-responsive btn-outline-primary" ng-click="toAddProject()">
+                            Create project <i class="fa fa-plus fa-sm"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!--Delete Project Modal-->
+                <div ng-if="role == 'Admin' || role == 'Manager'" class="modal fade" id="deleteProjectModal" tabindex="-1" role="dialog" aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteProjectModalLabel">Delete Project(s)</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete the following projects?
+                                <ul class="list-group mt-4">
+                                    <li class="list-group-item" ng-repeat="selectedProject in selectedProjects">
+                                        {{selectedProject.name}}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" ng-click="deleteSelectedProjects();" data-dismiss="modal">Yes</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>

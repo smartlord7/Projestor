@@ -1,0 +1,31 @@
+﻿<div class="container-fluid">
+    <div class="jumbotron-fluid ml-5 row">
+            <div class="col-sm-6" style="margin-top: 100px">
+                <h3 class="display-4 bold">Issue <strong>{{issue.name}}</strong> - Details</h3>
+                <h5 class="mt-5">Project: </h5>
+                <p class="text-uppercase">{{issue.projectName}}</p>
+                <h5 class="mt-4">Created on: </h5>
+                <p>{{issue.createdDateTime | date: "dd/MM/yyyy, HH:mm"}}</p>
+                <h5 class="mt-4">Last modified on: </h5>
+                <p>{{issue.lastAlteredDateTime | date: "dd/MM/yyyy, HH:mm"}}</p>
+                <h5 class="mt-4">Limit Date: </h5>
+                <p>{{issue.limitDate | date: "dd/MM/yyyy"}}</p>
+                <button class="btn btn-outline-primary mt-5" ng-click="back()" type="button" role="button"> Back <</button>
+            </div>
+            <div class="col-sm-5" style="margin-top: 225px">
+                <h5>Priority: </h5>
+                <span class="badge"
+                      ng-class="{'badge-secondary ' : issue.state == 0, 'badge-warning text-white' : issue.state == 1,
+                        'badge-danger ' : issue.state == 2, 'badge-primary' : issue.state == 3, 'badge-success' : issue.state == 4}">
+                    {{issue | stateFilter}}
+                </span>
+                <h5 class="mt-4">Current State: </h5>
+                <span class="badge"
+                      ng-class="{'badge-secondary ' : issue.prio == 0, 'badge-success' : issue.prio == 1,
+                        'badge-warning text-white' : issue.prio == 2, 'badge-danger' : issue.prio == 3}">
+                    {{issue | prioFilter}}
+                </span>
+                <h5 class="mt-4">Description: </h5> <p class="lead">{{issue.description}}</p>
+            </div>
+        </div>
+</div>

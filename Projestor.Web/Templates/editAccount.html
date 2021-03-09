@@ -1,0 +1,41 @@
+﻿<div class="container">
+    <form name="registerForm">
+        <h3 class="display-4" style="margin-top: 150px">Edit Account</h3>
+        <div class="row mt-5">
+            <div class="col-sm-4">
+                <fieldset>
+                    <div class="form-group mt-4">
+                        <label for="userName">* Username:</label>
+                        <input class="form-control" ng-model="user.userName" style="width: 75%" name="userName" type="text" placeholder="Enter your username..." maxlength="50" required />
+                    </div>
+                    <div class="form-group mt-4">
+                        <label for="phoneNumber">* Phone Number:</label>
+                        <input class="form-control" ng-model="user.phoneNumber" style="width: 75%" name="phoneNumber" type="tel" placeholder="Enter your phone number..." required />
+                    </div>
+                    <div class="form-group mt-4">
+                        <label for="userName">* Email:</label>
+                        <input class="form-control" ng-model="user.email" style="width: 75%" name="email" type="email" placeholder="Enter your email..." required />
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-sm-4">
+                <fieldset>
+                    <div class="form-group mt-4">
+                        <label for="job">* Job:</label>
+                        <input class="form-control" ng-model="user.job" style="width: 75%" name="job" type="text" placeholder="Enter your job..." maxlength="15" required />
+                    </div>
+                    <div class="form-check-group mt-4">
+                        <label for="bio">Bio:</label>
+                        <textarea class="form-control" ng-model="user.bio" style="width: 75%; max-height: 133px; min-height: 50px; position: absolute" name="bio" placeholder="Write something about you..." />
+                    </div>>
+                </fieldset>
+            </div>
+            <div class="col-sm-4"></div>
+            </div>
+            <div class="button-group mt-5" role="group" aria-label="Edit Controls">
+                <button class="btn btn-outline-success" ng-click="saveUser()" type="submit" role="button"> Save </button>
+                <button class="btn btn-outline-danger" ng-click="back()" type="button" role="button"> Cancel </button>
+                <small class="ml-5"> * - Mandatory fields</small>
+            </div>
+</form>
+</div>
